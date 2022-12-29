@@ -1,53 +1,49 @@
 <?php
-
-class Team
+class Collection
 {
-    protected $name;
-    protected $members;
-    public function __construct($name, $members = [])
-    {
-        $this->name = $name;
-        $this->members = $members;
-    }
-    public static function start(...$params)
-    {
-        return new static(...$params);
-    }
-    public function name()
-    {
-        return $this->name;
-    }
-    public function members()
-    {
-        return $this->members;
-    }
-    public function add($name)
-    {
-        $this->members[] = $name;
-    }
-    public function cancel()
-    {
-    }
-    public function manager()
-    {
-    }
-}
+    protected array $items;
 
-class Member
-{
-    protected $name;
-    public function __construct($name)
+    protected $total = 0;
+
+    public function __construct(array $items)
     {
-        $this->name = $name;
+        $this->items = $items;
     }
-    public function lastViewed() {
+
+    public function sum($key)
+    {
+        return array_sum(array_map(function ($item) use ($key) {
+            return $item->$key;
+        }, $this->items));
+
+        
         
     }
 }
 
-$acme = Team::start('Acme', [
-    new Member('Liz Garcia'),
-    new Member('Lisdelys Garcia'),
+class VideosCollection extends Collection {
+    public function length(){
+         return $this->sum('length');
+    }
+}
+
+class Video
+{
+    public $title;
+    public $length;
+
+    public function __construct($title, $length)
+    {
+        $this->title = $title;
+        $this->length = $length;
+    }
+}
+
+
+$videos = new VideosCollection([
+    new Video('Some Video', 100),
+    new Video('Some Video 2', 250),
+    new Video('Some Video 3', 300)
 ]);
-$acme->add(new Member('John Doe')) ;
-var_dump($acme->members());
+
+echo $videos->sum('length');
