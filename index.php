@@ -1,49 +1,34 @@
 <?php
-class Collection
+
+abstract class AchievementType
 {
-    protected array $items;
-
-    protected $total = 0;
-
-    public function __construct(array $items)
+    public function name()
     {
-        $this->items = $items;
+        $class = (new ReflectionClass($this))->getShortName();
+        
+        return trim(preg_replace('/[A-Z]/', ' $0', $class));
+    }
+    public function icon()
+    {
+        return strtolower(str_replace(' ', '-', $this->name())).'.png';
     }
 
-    public function sum($key)
-    {
-        return array_sum(array_map(function ($item) use ($key) {
-            return $item->$key;
-        }, $this->items));
-
-        
-        
-    }
+    abstract public function qualifier($user);
 }
 
-class VideosCollection extends Collection {
-    public function length(){
-         return $this->sum('length');
-    }
-}
-
-class Video
+class ReachTop50 extends AchievementType
 {
-    public $title;
-    public $length;
-
-    public function __construct($title, $length)
+    public function qualifier($user)
     {
-        $this->title = $title;
-        $this->length = $length;
     }
 }
 
+class FirstBestAnswer extends AchievementType
+{
+    public function qualifier($user)
+    {
+    }
+}
 
-$videos = new VideosCollection([
-    new Video('Some Video', 100),
-    new Video('Some Video 2', 250),
-    new Video('Some Video 3', 300)
-]);
-
-echo $videos->sum('length');
+$achievement = new ReachTop50();
+echo $achievement->icon();
