@@ -1,35 +1,26 @@
-<?php
+<?php 
 
-interface Newsletter
-{
-    public function subscribe($email);
-}
-
-class CampaignMonitor implements Newsletter
-{
-    public function subscribe($email)
+class Person {
+    public function __construct($name)
     {
-        die('subcribing with Campaign Monitor');
+        $this->name = $name;
+    }
+
+    public function job() {
+        return 'software developer';
+    }
+    
+    public function favoriteTeam() {
+        
+    }
+    private function thingsThatKeepMeUpAtNight() {
+        return 'We are all going to die and that is terrifying';
     }
 }
 
-class Drip implements Newsletter
-{
-    public function subscribe($email)
-    {
-        die('subcribing with Drip');
-    }
-}
+$method = new \ReflectionMethod(Person::class, 'thingsThatKeepMeUpAtNight');
+$method->setAccessible(true);
 
-class NewsletterSubscriptionsController
-{
-    public function store(Newsletter $newsletter)
-    {
-        $email = 'joe@example.com';
+$person = new Person('Brad');
 
-        $newsletter->subscribe($email);
-    }
-}
-
-$controller = new NewsletterSubscriptionsController();
-var_dump ($controller->store(new CampaignMonitor()));
+var_dump($method->invoke($person));
