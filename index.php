@@ -1,34 +1,35 @@
 <?php
 
-abstract class AchievementType
+interface Newsletter
 {
-    public function name()
-    {
-        $class = (new ReflectionClass($this))->getShortName();
-        
-        return trim(preg_replace('/[A-Z]/', ' $0', $class));
-    }
-    public function icon()
-    {
-        return strtolower(str_replace(' ', '-', $this->name())).'.png';
-    }
-
-    abstract public function qualifier($user);
+    public function subscribe($email);
 }
 
-class ReachTop50 extends AchievementType
+class CampaignMonitor implements Newsletter
 {
-    public function qualifier($user)
+    public function subscribe($email)
     {
+        die('subcribing with Campaign Monitor');
     }
 }
 
-class FirstBestAnswer extends AchievementType
+class Drip implements Newsletter
 {
-    public function qualifier($user)
+    public function subscribe($email)
     {
+        die('subcribing with Drip');
     }
 }
 
-$achievement = new ReachTop50();
-echo $achievement->icon();
+class NewsletterSubscriptionsController
+{
+    public function store(Newsletter $newsletter)
+    {
+        $email = 'joe@example.com';
+
+        $newsletter->subscribe($email);
+    }
+}
+
+$controller = new NewsletterSubscriptionsController();
+var_dump ($controller->store(new CampaignMonitor()));
