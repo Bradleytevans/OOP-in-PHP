@@ -1,26 +1,52 @@
-<?php 
+<?php
 
-class Person {
-    public function __construct($name)
+class Subscription
+{
+    protected Gateway $gateway;
+
+    public function __construct(Gateway $gateway)
     {
-        $this->name = $name;
+        $this->gateway = $gateway;
     }
 
-    public function job() {
-        return 'software developer';
+    public function create()
+    {
     }
-    
-    public function favoriteTeam() {
-        
+    public function cancel()
+    {
+        $this->gateway->findCustomer();
     }
-    private function thingsThatKeepMeUpAtNight() {
-        return 'We are all going to die and that is terrifying';
+    public function invoice()
+    {
+    }
+    public function swap($newPlan)
+    {
+    }
+
+}
+
+interface Gateway{
+    public function findCustomer();
+    public function findSubscriptionByCustomer();
+}
+
+class  BrainTreeGateway implements Gateway{
+
+    public function findCustomer()
+    {
+    }
+    public function findSubscriptionByCustomer()
+    {
     }
 }
 
-$method = new \ReflectionMethod(Person::class, 'thingsThatKeepMeUpAtNight');
-$method->setAccessible(true);
+class  StripeGateway implements Gateway{
 
-$person = new Person('Brad');
-
-var_dump($method->invoke($person));
+    public function findCustomer()
+    {
+    }
+    public function findSubscriptionByCustomer()
+    {
+    }
+}
+new Subscription(new StripeGateway());
