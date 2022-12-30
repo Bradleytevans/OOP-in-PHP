@@ -1,27 +1,20 @@
 <?php
 
-class Age
-{
-    private $age;
-    public function __construct($age)
-    {
-        if ($age < 0 || $age > 120) {
-            throw new InvalidArgumentException(('dude are you benjamin button?'));
-        }
-        $this->age = $age;
-    }
+class Coordinates {
+    public $x;
+    public $y;
 
-    public function increment()
-    {
-        return new self($this->age +1);
-    }
-
-    public function get()
-    {
-        return $this->age;
+    public function __construct($x, $y){
+        $this->x = $x;
+        $this->y = $y;
     }
 }
 
-$age = new Age(45);
-$age = $age->increment();
-var_dump($age);
+function pin(Coordinates $coordinates)
+{
+
+}
+
+function distance($x1, $y1, $x2, $y2){
+
+}
