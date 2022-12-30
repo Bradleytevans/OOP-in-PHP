@@ -1,52 +1,27 @@
 <?php
 
-class Subscription
+class Age
 {
-    protected Gateway $gateway;
-
-    public function __construct(Gateway $gateway)
+    private $age;
+    public function __construct($age)
     {
-        $this->gateway = $gateway;
+        if ($age < 0 || $age > 120) {
+            throw new InvalidArgumentException(('dude are you benjamin button?'));
+        }
+        $this->age = $age;
     }
 
-    public function create()
+    public function increment()
     {
-    }
-    public function cancel()
-    {
-        $this->gateway->findCustomer();
-    }
-    public function invoice()
-    {
-    }
-    public function swap($newPlan)
-    {
+        return new self($this->age +1);
     }
 
-}
-
-interface Gateway{
-    public function findCustomer();
-    public function findSubscriptionByCustomer();
-}
-
-class  BrainTreeGateway implements Gateway{
-
-    public function findCustomer()
+    public function get()
     {
-    }
-    public function findSubscriptionByCustomer()
-    {
+        return $this->age;
     }
 }
 
-class  StripeGateway implements Gateway{
-
-    public function findCustomer()
-    {
-    }
-    public function findSubscriptionByCustomer()
-    {
-    }
-}
-new Subscription(new StripeGateway());
+$age = new Age(45);
+$age = $age->increment();
+var_dump($age);
